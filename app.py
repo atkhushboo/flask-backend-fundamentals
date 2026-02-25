@@ -1,24 +1,26 @@
-from flask import Flask
+from flask import Flask, render_template ,request ,redirect,url_for
 
 app=Flask(__name__)
 
 @app.route("/")
-def home ():
-    return "Khushboo is runing Flask! "
+def flask_web():
+    return render_template("index.html")
 
-@app.route("/sum")
-def main():
-    sum=2+3
-    return f"Sum is {sum}"
+@app.route("/login",methods=["GET","POST"])
+def login():
+    if request.method =="POST":
+        username= request.form.get("username")
+        passsword= request.form.get("password")
 
-@app.route("/info")
-def info():
-    return f"user details in user"
+        if username=="khushboo" and passsword=="12345":
+            return redirect(url_for("dashboard"))
+        else:
+            return render_template("login.html", error="Invalid Credentials ❌")
+    return render_template("login.html")
 
-@app.route("/info/user")
-def user():
-    return f"name=Khushboo designation=SDE"
-
+@app.route("/dashboard")
+def dashboard():
+    return render_template("dashboard.html")
 
 if __name__=="__main__":
     app.run(debug=True)
